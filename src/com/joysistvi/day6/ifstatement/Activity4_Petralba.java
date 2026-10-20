@@ -8,15 +8,15 @@ public class Activity4_Petralba {
         if (age>=0){
             if(age<=0){
                 result= "Baby";
-            } else if (age<=3) {
+            } else if (age<=2) {
                 result= "Child";
-            } else if (age<=13) {
+            } else if (age<=12) {
                 result= "Teenager";
-            } else if (age<=20) {
+            } else if (age<=19) {
                 result= "Young Adult";
-            } else if (age<=30) {
+            } else if (age<=29) {
                 result = "Adult";
-            } else if (age<=60) {
+            } else if (age<=59) {
                 result = "Senior";
             } else {
                 result = "Invalid age";
