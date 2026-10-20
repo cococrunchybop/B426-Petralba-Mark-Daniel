@@ -6,17 +6,17 @@ public class Activity4_Petralba {
         String result;
 
         if (age>=0){
-            if(age<=0){
-                result= "Baby";
-            } else if (age<=2) {
-                result= "Child";
+            if(age<=2){
+                result = "Baby";
             } else if (age<=12) {
-                result= "Teenager";
+                result = "Child";
             } else if (age<=19) {
-                result= "Young Adult";
+                result = "Teenager";
             } else if (age<=29) {
-                result = "Adult";
+                result = "Young Adult";
             } else if (age<=59) {
+                result = "Adult";
+            } else if (age<=100) {
                 result = "Senior";
             } else {
                 result = "Invalid age";
