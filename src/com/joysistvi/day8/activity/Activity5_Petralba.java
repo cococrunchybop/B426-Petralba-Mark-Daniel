@@ -177,7 +177,7 @@ public class Activity5_Petralba {
                 default:
                     System.out.println("Invalid choice.");
             }
-            // Promo details menu (only if a valid promo was picked)
+      
         if (validPromo) {
                 System.out.println();
                 System.out.println("        *** " + promoName + " Promo ***");
