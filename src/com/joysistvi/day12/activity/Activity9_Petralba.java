@@ -3,17 +3,17 @@ import java.util.Scanner;
 
 public class Activity9_Petralba {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+        Scanner s = new Scanner(System.in);
 
         System.out.println("===================================");
         System.out.println("         Average Calculator");
         System.out.println("===================================");
 
         System.out.print("Enter number of students: ");
-        int numStudents = input.nextInt();
+        int numStudents = s.nextInt();
         System.out.print("Enter number of subjects: ");
-        int numSubjects = input.nextInt();
-        input.nextLine();
+        int numSubjects = s.nextInt();
+        s.nextLine();
 
         String[] subjects = new String[numSubjects];
         String[] names = new String[numStudents];
@@ -23,20 +23,20 @@ public class Activity9_Petralba {
         System.out.println("Enter subject names:");
         for (int i = 0; i < numSubjects; i++) {
             System.out.print("Subject " + (i + 1) + ": ");
-            subjects[i] = input.nextLine();
+            subjects[i] = s.nextLine();
         }
 
         for (int i = 0; i < numStudents; i++) {
             System.out.println();
             System.out.print("Name of Student " + (i + 1) + ": ");
-            names[i] = input.nextLine();
+            names[i] = s.nextLine();
 
             System.out.println("Enter grades for each subject:");
             for (int j = 0; j < numSubjects; j++) {
                 System.out.print(subjects[j] + ": ");
-                grades[i][j] = input.nextInt();
+                grades[i][j] = s.nextInt();
             }
-            input.nextLine();
+            s.nextLine();
         }
 
 
@@ -66,6 +66,6 @@ public class Activity9_Petralba {
             System.out.printf("%.2f%n", average);
         }
 
-        input.close();
+        s.close();
     }
 }
