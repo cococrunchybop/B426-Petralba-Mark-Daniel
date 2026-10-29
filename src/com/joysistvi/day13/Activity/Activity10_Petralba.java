@@ -74,6 +74,7 @@ public class Activity10_Petralba{
         System.out.println(word.indexOf('z'));            // -1 (not found)
     }
 
+
     // ---------------------------------------------------------
     // 5. trim()
     // Removes whitespace at the START and END of a string.
@@ -88,6 +89,7 @@ public class Activity10_Petralba{
         System.out.println("[" + messy.trim() + "]");     // [Hello World]
     }
 
+
     // ---------------------------------------------------------
     // 6. replace()
     // Replaces ALL occurrences of a character/text with another.
@@ -100,6 +102,7 @@ public class Activity10_Petralba{
         System.out.println(greeting.replace('o', '0'));          // Hell0 W0rld
         System.out.println(greeting.replace("World", "Java"));   // Hello Java
     }
+
 
     // ---------------------------------------------------------
     // 7. toCharArray()
@@ -116,6 +119,7 @@ public class Activity10_Petralba{
         }
         System.out.println("Length of array: " + letters.length);  // 4
     }
+
 
     // ---------------------------------------------------------
     // STRETCH GOAL
