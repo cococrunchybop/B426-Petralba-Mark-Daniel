@@ -71,7 +71,7 @@ public class Activity10_Petralba{
         System.out.println(word.indexOf('g'));            // 3  (first 'g')
         System.out.println(word.indexOf("gram"));         // 3
         System.out.println(word.indexOf('g', 4));         // 10 (search starts at index 4)
-        System.out.println(word.indexOf('z'));            // -1 (not found)
+        System.out.println(word.indexOf('G'));            // -1 (not found)
     }
 
 
@@ -157,4 +157,6 @@ public class Activity10_Petralba{
         System.out.println("Number of 'P/p': " + pCount);
         System.out.println("Number of vowels: " + vowelCount);
     }
+
+
 }
