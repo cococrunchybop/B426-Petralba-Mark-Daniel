@@ -10,7 +10,7 @@ public class Activity5_Petralba {
         System.out.print("Enter USSD Code: ");
         String num = sc.nextLine();
 
-        if (!num.equals("*143#")) {
+        if (!num.   equals("*143#")) {
             System.out.println("Invalid USSD code.");
             return;
         }
