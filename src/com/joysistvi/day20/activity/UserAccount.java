@@ -12,6 +12,7 @@ public class UserAccount {
 
     private static final String EMAIL_REGEX =
             "^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$";
+            //source for regex https://gist.github.com/cgkio/7268045
     private static final int MIN_PASSWORD_LENGTH = 8;
 
     public UserAccount() {
