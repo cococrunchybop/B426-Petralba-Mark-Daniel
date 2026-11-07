@@ -4,6 +4,14 @@ import java.util.Scanner;
 
 public class Main {
 
+    /*
+
+    Dami ko binago huhu masyado pala advance ginawa ko kahapon T^T
+
+     */
+
+
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
