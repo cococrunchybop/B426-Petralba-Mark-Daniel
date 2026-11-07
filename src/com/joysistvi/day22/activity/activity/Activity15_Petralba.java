@@ -1,7 +1,7 @@
-package com.joysistvi.day22.activity.encap;
+package com.joysistvi.day22.activity.activity;
 
 
-public class Main {
+public class Activity15_Petralba {
 
     public static void main(String[] args) {
 

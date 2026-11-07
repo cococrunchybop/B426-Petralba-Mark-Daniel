@@ -1,4 +1,4 @@
-package com.joysistvi.day22.activity.encap;
+package com.joysistvi.day22.activity.activity;
 
 public class Ballpen extends Pen {
 
