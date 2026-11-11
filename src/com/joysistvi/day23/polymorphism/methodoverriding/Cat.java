@@ -1,10 +1,9 @@
 package com.joysistvi.day23.polymorphism.methodoverriding;
 
-import com.joysistvi.day22.inheritance.Animal;
-
+// Child / Sub Class
 public class Cat extends Animal {
 
-    String furColor;
+    private String furColor;
 
     public Cat(String name, int age, String furColor) {
         super(name, age);
@@ -24,10 +23,16 @@ public class Cat extends Animal {
         System.out.println(getName() + " is scratching the sofa.");
     }
 
+
+    @Override
+    public void makeSound() {
+        System.out.println(getName() + " says: Meow meow!");
+    }
+
     @Override
     public String toString() {
         return "Type: Cat\n"
                 + super.toString() + "\n"
-                + "Furcolor: " + furColor;
+                + "Fur Color: " + furColor;
     }
 }

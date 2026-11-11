@@ -1,14 +1,14 @@
 package com.joysistvi.day23.polymorphism.methodoverriding;
 
-import com.joysistvi.day22.inheritance.Animal;
+// Don't Repeat Yourself Principle
+public  class Dog extends Animal {
 
-public class Dog extends Animal {
-
-    String breed = "askal";
+    private String breed;
 
     public Dog(String name, int age, String breed) {
         super(name, age);
         this.breed = breed;
+
     }
 
     public String getBreed() {
@@ -19,9 +19,9 @@ public class Dog extends Animal {
         this.breed = breed;
     }
 
-    // method overriding: Dog has its own verseion of makeSound()
-    @Override
-    public void makeSound() {
+    // method overriding: Dog has its own version of makeSound()
+     @Override
+     public void makeSound() {
         System.out.println(getName() + " says: Woof! Woof!");
     }
 
@@ -37,3 +37,5 @@ public class Dog extends Animal {
                 + "Breed: " + breed;
     }
 }
+
+//
