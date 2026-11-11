@@ -4,14 +4,13 @@ public class Highlighter extends Pen implements Refillable {
 
     String inkType;
 
-    // parameterize constructor (special method)
+
     public Highlighter(String brand, String color, String inkType, double weightInGrams) {
         super(brand, color, weightInGrams);
         this.inkType = inkType;
     }
 
 
-    // Shortcut to generate Getter and Setter: press alt + insert
 
     public String getInkType() {
         return inkType;
