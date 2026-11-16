@@ -31,6 +31,15 @@ public class UserAccount {
         this.setPassword(password);
     }
 
+    public UserAccount(String firstName, String middleName, String lastName,
+                        String email, String password) {
+        this.setFirstName(firstName);
+        this.setMiddleName(middleName);
+        this.setLastName(lastName);
+        this.setEmail(email);
+        this.setPassword(password);
+    }
+
     // Getters
     public String getFirstName() {
         return firstName;
