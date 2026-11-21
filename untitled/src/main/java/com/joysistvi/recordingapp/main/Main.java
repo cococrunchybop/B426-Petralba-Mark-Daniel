@@ -36,13 +36,13 @@ public class Main {
 
         viewAllAlbums();
         createAlbum("Coco", 1990, 1);
-        updateAlbum(18, "Coco (Remastered)", 1995, 1);
-        deleteAlbum(18);
+        updateAlbum(21, "Coco (Remastered)", 1995, 1);
+        deleteAlbum(21);
 
         viewAllArtists();
         createArtist("IV of Spades");
-        updateArtist(18, "IV Of Spades");
-        deleteArtist(18);
+        updateArtist(21, "IV Of Spades");
+        deleteArtist(21);
 
         searchArtist("Ben");
     }
