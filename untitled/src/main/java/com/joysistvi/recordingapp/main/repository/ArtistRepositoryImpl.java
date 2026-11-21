@@ -54,5 +54,4 @@ public class ArtistRepositoryImpl implements ArtistRepository {
         }
     }
 
-    // TODO: update, delete, archive, restore, search
 }

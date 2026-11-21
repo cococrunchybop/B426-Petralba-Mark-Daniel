@@ -20,7 +20,5 @@ public class App {
         artistView.displayAllArtists();
         artistView.promptCreateArtist();
 
-        // TODO: Album and User wiring (model, repository, service, view)
-        // TODO: main menu
     }
 }

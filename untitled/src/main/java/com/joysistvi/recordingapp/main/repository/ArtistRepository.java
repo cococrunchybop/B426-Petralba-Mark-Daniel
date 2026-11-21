@@ -10,5 +10,4 @@ public interface ArtistRepository {
 
     boolean save(Artist artist);
 
-    // TODO: findAllArchived, update, deleteById, archiveById, restoreById, searchByName
 }

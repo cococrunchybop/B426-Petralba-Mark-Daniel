@@ -10,5 +10,4 @@ public interface ArtistService {
 
     boolean createArtist(String name);
 
-    // TODO: getAllArchivedArtists, updateArtist, deleteArtist, archiveArtist, restoreArtist, searchArtists
 }
