@@ -16,7 +16,7 @@ public class Main {
         deleteAlbum(14);
 
         viewAllArtists();
-        createArtist("IV of Spades");
+        a
         updateArtist(14, "IV Of Spades");
         deleteArtist(14);
     }
