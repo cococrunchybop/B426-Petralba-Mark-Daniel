@@ -1,5 +1,6 @@
-package com.joysistvi.recordingapp.model;
+package com.joysistvi.recordingapp.main.model;
 
+// Model(Presentation Tier) -> representing database entities
 public class Artist {
 
     private int id;
@@ -10,6 +11,11 @@ public class Artist {
     }
 
     public Artist(String name) {
+        this.name = name;
+    }
+
+    public Artist(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 

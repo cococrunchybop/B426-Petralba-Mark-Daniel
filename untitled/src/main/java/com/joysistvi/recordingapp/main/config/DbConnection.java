@@ -1,4 +1,4 @@
-package com.joysistvi.recordingapp.config;
+package com.joysistvi.recordingapp.main.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,11 +6,11 @@ import java.sql.SQLException;
 
 public class DbConnection {
 
-    private final String url = "jdbc:mysql://localhost:3306/recording_studio_db";
-    private final String username = "root";
-    private final String password = "root@123";
+    private final static String URL = "jdbc:mysql://localhost:3306/recording_studio_db";
+    private final static String USERNAME = "root";
+    private final static String PASSWORD = "root@123";
 
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, username, password);
+    public Connection connect() throws SQLException {
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 }

@@ -1,7 +1,7 @@
-package com.joysistvi.recordingapp.repository;
+package com.joysistvi.recordingapp.main.repository;
 
-import com.joysistvi.recordingapp.config.DbConnection;
-import com.joysistvi.recordingapp.model.Artist;
+import com.joysistvi.recordingapp.main.config.DbConnection;
+import com.joysistvi.recordingapp.main.model.Artist;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,7 @@ public class ArtistRepositoryImpl implements ArtistRepository {
         String query = "SELECT id, name, is_archived FROM artists WHERE is_archived = 0 ORDER BY id";
         List<Artist> artists = new ArrayList<>();
 
-        try (Connection connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.connect();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
@@ -34,7 +34,29 @@ public class ArtistRepositoryImpl implements ArtistRepository {
                         resultSet.getBoolean("is_archived")));
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("Read Artists Error: " + e.getMessage(), e);
+            System.out.println("Repository Error (findAllActive): " + e.getMessage());
+        }
+
+        return artists;
+    }
+
+    @Override
+    public List<Artist> findAllArchived() {
+        String query = "SELECT id, name, is_archived FROM artists WHERE is_archived = 1 ORDER BY id";
+        List<Artist> artists = new ArrayList<>();
+
+        try (Connection connection = dbConnection.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                artists.add(new Artist(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getBoolean("is_archived")));
+            }
+        } catch (SQLException e) {
+            System.out.println("Repository Error (findAllArchived): " + e.getMessage());
         }
 
         return artists;
@@ -44,14 +66,103 @@ public class ArtistRepositoryImpl implements ArtistRepository {
     public boolean save(Artist artist) {
         String query = "INSERT INTO artists (name, is_archived) VALUES (?, 0)";
 
-        try (Connection connection = dbConnection.getConnection();
+        try (Connection connection = dbConnection.connect();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, artist.getName());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new IllegalStateException("Create Artist Error: " + e.getMessage(), e);
+            System.out.println("Repository Error (save): " + e.getMessage());
+            return false;
         }
+    }
+
+    @Override
+    public boolean update(Artist artist) {
+        String query = "UPDATE artists SET name = ? WHERE id = ?";
+
+        try (Connection connection = dbConnection.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, artist.getName());
+            preparedStatement.setInt(2, artist.getId());
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Repository Error (update): " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        String query = "DELETE FROM artists WHERE id = ?";
+
+        try (Connection connection = dbConnection.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Repository Error (deleteById): " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean archiveById(int id) {
+        String query = "UPDATE artists SET is_archived = 1 WHERE id = ?";
+
+        try (Connection connection = dbConnection.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Repository Error (archiveById): " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean restoreById(int id) {
+        String query = "UPDATE artists SET is_archived = 0 WHERE id = ?";
+
+        try (Connection connection = dbConnection.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Repository Error (restoreById): " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public List<Artist> searchByName(String keyword) {
+        String query = "SELECT id, name, is_archived FROM artists " +
+                "WHERE is_archived = 0 AND name LIKE ? " +
+                "ORDER BY id";
+        List<Artist> artists = new ArrayList<>();
+
+        try (Connection connection = dbConnection.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, "%" + keyword + "%");
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    artists.add(new Artist(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getBoolean("is_archived")));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Repository Error (searchByName): " + e.getMessage());
+        }
+
+        return artists;
     }
 
 }
