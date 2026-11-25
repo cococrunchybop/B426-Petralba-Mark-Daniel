@@ -7,9 +7,6 @@ public class Artist {
     private String name;
     private boolean archived;
 
-    public Artist() {
-    }
-
     public Artist(String name) {
         this.name = name;
     }

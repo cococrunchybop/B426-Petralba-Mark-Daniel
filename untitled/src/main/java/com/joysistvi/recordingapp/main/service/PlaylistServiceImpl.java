@@ -1,6 +1,7 @@
 package com.joysistvi.recordingapp.main.service;
 
 import com.joysistvi.recordingapp.main.model.Playlist;
+import com.joysistvi.recordingapp.main.model.Song;
 import com.joysistvi.recordingapp.main.repository.PlaylistRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,10 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public boolean createPlaylist(String name, int userId) {
         if (!isValidPlaylistInput(name, userId)) {
+            return false;
+        }
+        if (!playlistRepository.findByUserId(userId).isEmpty()) {
+            System.out.println("Validation Error: User already has a playlist.");
             return false;
         }
         return playlistRepository.save(new Playlist(name.trim(), userId));
@@ -77,6 +82,52 @@ public class PlaylistServiceImpl implements PlaylistService {
             return new ArrayList<>();
         }
         return playlistRepository.searchByName(keyword.trim());
+    }
+
+    @Override
+    public List<Playlist> getPlaylistsByUser(int userId) {
+        if (userId <= 0) {
+            System.out.println("Validation Error: User ID must be greater than 0.");
+            return new ArrayList<>();
+        }
+        List<Playlist> results = playlistRepository.findByUserId(userId);
+        return results != null ? results : new ArrayList<>();
+    }
+
+    @Override
+    public List<Song> getSongsInPlaylist(int playlistId) {
+        if (playlistId <= 0) {
+            System.out.println("Validation Error: Playlist ID must be greater than 0.");
+            return new ArrayList<>();
+        }
+        List<Song> results = playlistRepository.findSongsByPlaylistId(playlistId);
+        return results != null ? results : new ArrayList<>();
+    }
+
+    @Override
+    public boolean addSongToPlaylist(int playlistId, int songId) {
+        if (playlistId <= 0) {
+            System.out.println("Validation Error: Playlist ID must be greater than 0.");
+            return false;
+        }
+        if (songId <= 0) {
+            System.out.println("Validation Error: Song ID must be greater than 0.");
+            return false;
+        }
+        return playlistRepository.addSongToPlaylist(playlistId, songId);
+    }
+
+    @Override
+    public boolean removeSongFromPlaylist(int playlistId, int songId) {
+        if (playlistId <= 0) {
+            System.out.println("Validation Error: Playlist ID must be greater than 0.");
+            return false;
+        }
+        if (songId <= 0) {
+            System.out.println("Validation Error: Song ID must be greater than 0.");
+            return false;
+        }
+        return playlistRepository.removeSongFromPlaylist(playlistId, songId);
     }
 
     private boolean isValidPlaylistInput(String name, int userId) {

@@ -22,4 +22,6 @@ public interface ArtistService {
 
     List<Artist> searchArtists(String keyword);
 
+    Artist getArtistById(int id);
+
 }

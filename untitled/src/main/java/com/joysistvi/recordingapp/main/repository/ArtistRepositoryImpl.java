@@ -34,7 +34,7 @@ public class ArtistRepositoryImpl implements ArtistRepository {
                         resultSet.getBoolean("is_archived")));
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (findAllActive): " + e.getMessage());
+            System.out.println("Repository Error (findAllActive): " + DbConnection.friendlyMessage(e));
         }
 
         return artists;
@@ -56,7 +56,7 @@ public class ArtistRepositoryImpl implements ArtistRepository {
                         resultSet.getBoolean("is_archived")));
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (findAllArchived): " + e.getMessage());
+            System.out.println("Repository Error (findAllArchived): " + DbConnection.friendlyMessage(e));
         }
 
         return artists;
@@ -72,7 +72,7 @@ public class ArtistRepositoryImpl implements ArtistRepository {
             preparedStatement.setString(1, artist.getName());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (save): " + e.getMessage());
+            System.out.println("Repository Error (save): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -88,7 +88,7 @@ public class ArtistRepositoryImpl implements ArtistRepository {
             preparedStatement.setInt(2, artist.getId());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (update): " + e.getMessage());
+            System.out.println("Repository Error (update): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -103,7 +103,7 @@ public class ArtistRepositoryImpl implements ArtistRepository {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (deleteById): " + e.getMessage());
+            System.out.println("Repository Error (deleteById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -118,7 +118,7 @@ public class ArtistRepositoryImpl implements ArtistRepository {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (archiveById): " + e.getMessage());
+            System.out.println("Repository Error (archiveById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -133,7 +133,7 @@ public class ArtistRepositoryImpl implements ArtistRepository {
             preparedStatement.setInt(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (restoreById): " + e.getMessage());
+            System.out.println("Repository Error (restoreById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -159,10 +159,33 @@ public class ArtistRepositoryImpl implements ArtistRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (searchByName): " + e.getMessage());
+            System.out.println("Repository Error (searchByName): " + DbConnection.friendlyMessage(e));
         }
 
         return artists;
     }
 
+    @Override
+    public Artist findById(int id) {
+        String query = "SELECT id, name, is_archived FROM artists WHERE id = ? AND is_archived = 0";
+
+        try (Connection connection = dbConnection.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Artist(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getBoolean("is_archived"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Repository Error (findById): " + DbConnection.friendlyMessage(e));
+        }
+
+        return null;
+    }
 }

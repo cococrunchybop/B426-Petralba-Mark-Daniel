@@ -3,6 +3,7 @@ package com.joysistvi.recordingapp.main.view;
 import com.joysistvi.recordingapp.main.model.Song;
 import com.joysistvi.recordingapp.main.service.SongService;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class SongView {
@@ -16,6 +17,7 @@ public class SongView {
 
     public void handleMenu() {
         while (true) {
+            ConsoleUtil.clearScreen();
             System.out.println("\n=== MANAGE SONGS ===");
             System.out.println("1. View All Songs");
             System.out.println("2. Create Song");
@@ -27,17 +29,24 @@ public class SongView {
             System.out.println("0. Back");
 
             int choice = promptForInt("Choose an option: ");
-            switch (choice) {
-                case 1 -> displayAllSongs();
-                case 2 -> promptCreateSong();
-                case 3 -> promptUpdateSong();
-                case 4 -> promptSearchSongs();
-                case 5 -> promptArchiveSong();
-                case 6 -> promptRestoreSong();
-                case 7 -> promptDeleteSong();
-                case 0 -> { return; }
-                default -> System.out.println("Invalid option. Please try again.");
+            try {
+                switch (choice) {
+                    case 1 -> displayAllSongs();
+                    case 2 -> promptCreateSong();
+                    case 3 -> promptUpdateSong();
+                    case 4 -> promptSearchSongs();
+                    case 5 -> promptArchiveSong();
+                    case 6 -> promptRestoreSong();
+                    case 7 -> promptDeleteSong();
+                    case 0 -> { return; }
+                    default -> System.out.println("Invalid option. Please try again.");
+                }
+            } catch (NoSuchElementException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                System.out.println("\nSomething went wrong: " + e.getMessage());
             }
+            ConsoleUtil.pause(scanner);
         }
     }
 
@@ -138,33 +147,45 @@ public class SongView {
     }
 
     private void printSongTable(String header, List<Song> songs, String emptyMessage) {
+        String border = "+-------+------------------------+-----------------+----------+----------------------+";
+
         System.out.println(header);
-        System.out.printf("%-4s %-28s %-10s %-8s %-22s%n", "ID", "Title", "Genre", "Length", "Album");
+        System.out.println(border);
+        System.out.printf("| %-5s | %-22s | %-15s | %-8s | %-20s |%n",
+                "ID", "Title", "Genre", "Length", "Album");
+        System.out.println(border);
 
         if (songs == null || songs.isEmpty()) {
-            System.out.println(emptyMessage);
+            String message = (emptyMessage != null && !emptyMessage.isEmpty())
+                    ? emptyMessage
+                    : "No songs found.";
+            System.out.printf("| %-82s |%n", truncate(message, 82));
+            System.out.println(border);
             return;
         }
 
         for (Song song : songs) {
-            System.out.printf("%-4d %-28s %-10s %-8s %-22s%n",
+            String title = song.getTitle() != null ? song.getTitle() : "";
+            String genre = song.getGenre() != null ? song.getGenre() : "";
+            String length = song.getLength() != null ? song.getLength() : "";
+            String album = song.getAlbumName() != null ? song.getAlbumName() : "";
+
+            System.out.printf("| %-5d | %-22s | %-15s | %-8s | %-20s |%n",
                     song.getId(),
-                    song.getTitle(),
-                    song.getGenre(),
-                    song.getLength(),
-                    song.getAlbumName());
+                    truncate(title, 22),
+                    truncate(genre, 15),
+                    truncate(length, 8),
+                    truncate(album, 20));
         }
+
+        System.out.println(border);
+    }
+
+    private String truncate(String text, int maxLength) {
+        return ConsoleUtil.truncate(text, maxLength);
     }
 
     private int promptForInt(String promptMessage) {
-        while (true) {
-            System.out.print(promptMessage);
-            String input = scanner.nextLine().trim();
-            try {
-                return Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
-            }
-        }
+        return ConsoleUtil.promptForInt(scanner, promptMessage);
     }
 }

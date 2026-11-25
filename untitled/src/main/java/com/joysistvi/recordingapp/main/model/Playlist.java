@@ -18,6 +18,14 @@ public class Playlist {
 
     }
 
+    public Playlist(int id, String name, int userId, String username, boolean archived) {
+        this.id = id;
+        this.name = name;
+        this.userId = userId;
+        this.username = username;
+        this.archived = archived;
+    }
+
     public Playlist(String name, int userId) {
         this.name = name;
         this.userId = userId;

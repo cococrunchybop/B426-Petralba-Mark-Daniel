@@ -23,4 +23,7 @@ public interface ArtistRepository {
 
     List<Artist> searchByName(String keyword);
 
+    // Additional method: fetch a single active artist by ID (null if not found)
+    Artist findById(int id);
+
 }

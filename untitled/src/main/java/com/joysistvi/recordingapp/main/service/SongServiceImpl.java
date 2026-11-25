@@ -76,7 +76,8 @@ public class SongServiceImpl implements SongService {
             System.out.println("Validation Error: Search keyword cannot be blank.");
             return new ArrayList<>();
         }
-        return songRepository.searchByTitle(keyword.trim());
+        List<Song> results = songRepository.searchByTitle(keyword.trim());
+        return results != null ? results : new ArrayList<>();
     }
 
     private boolean isValidSongInput(String title, String genre, String length, int albumId) {

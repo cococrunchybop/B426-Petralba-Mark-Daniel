@@ -3,6 +3,7 @@ package com.joysistvi.recordingapp.main.view;
 import com.joysistvi.recordingapp.main.model.Album;
 import com.joysistvi.recordingapp.main.service.AlbumService;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class AlbumView {
@@ -16,6 +17,7 @@ public class AlbumView {
 
     public void handleMenu() {
         while (true) {
+            ConsoleUtil.clearScreen();
             System.out.println("\n=== MANAGE ALBUMS ===");
             System.out.println("1. View All Albums");
             System.out.println("2. Create Album");
@@ -27,18 +29,25 @@ public class AlbumView {
             System.out.println("0. Back");
 
             int choice = promptForInt("Choose an option: ");
-            switch (choice) {
-                case 1 -> displayAllAlbums();
-                case 2 -> promptCreateAlbum();
-                case 3 -> promptUpdateAlbum();
-                case 4 -> promptSearchAlbums();
-                case 5 -> promptArchiveAlbum();
-                case 6 -> promptRestoreAlbum();
-                case 7 -> promptDeleteAlbum();
-                case 0 -> { return; }
-                default -> System.out.println("Invalid option. Please try again.");
+            try {
+                switch (choice) {
+                    case 1 -> displayAllAlbums();
+                    case 2 -> promptCreateAlbum();
+                    case 3 -> promptUpdateAlbum();
+                    case 4 -> promptSearchAlbums();
+                    case 5 -> promptArchiveAlbum();
+                    case 6 -> promptRestoreAlbum();
+                    case 7 -> promptDeleteAlbum();
+                    case 0 -> { return; }
+                    default -> System.out.println("Invalid option. Please try again.");
 
+                }
+            } catch (NoSuchElementException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                System.out.println("\nSomething went wrong: " + e.getMessage());
             }
+            ConsoleUtil.pause(scanner);
         }
     }
 
@@ -133,32 +142,41 @@ public class AlbumView {
     }
 
     private void printAlbumTable(String header, List<Album> albums, String emptyMessage) {
+        String border = "+------+------------------------+------+----------------------+";
+
         System.out.println(header);
-        System.out.printf("%-4s %-22s %-8s %-20s%n", "ID", "Album Name", "Year", "Artist");
+        System.out.println(border);
+        System.out.printf("| %-4s | %-22s | %-4s | %-20s |%n", "ID", "Album Name", "Year", "Artist");
+        System.out.println(border);
 
         if (albums == null || albums.isEmpty()) {
-            System.out.println(emptyMessage);
+            String message = (emptyMessage != null && !emptyMessage.isEmpty())
+                    ? emptyMessage
+                    : "No albums found.";
+            System.out.printf("| %-59s |%n", truncate(message, 59));
+            System.out.println(border);
             return;
         }
 
         for (Album album : albums) {
-            System.out.printf("%-4d %-22s %-8d %-20s%n",
+            String name = album.getName() != null ? album.getName() : "";
+            String artist = album.getArtistName() != null ? album.getArtistName() : "";
+
+            System.out.printf("| %-4d | %-22s | %-4d | %-20s |%n",
                     album.getId(),
-                    album.getName(),
+                    truncate(name, 22),
                     album.getYear(),
-                    album.getArtistName());
+                    truncate(artist, 20));
         }
+
+        System.out.println(border);
+    }
+
+    private String truncate(String text, int maxLength) {
+        return ConsoleUtil.truncate(text, maxLength);
     }
 
     private int promptForInt(String promptMessage) {
-        while (true) {
-            System.out.print(promptMessage);
-            String input = scanner.nextLine().trim();
-            try {
-                return Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
-            }
-        }
+        return ConsoleUtil.promptForInt(scanner, promptMessage);
     }
 }

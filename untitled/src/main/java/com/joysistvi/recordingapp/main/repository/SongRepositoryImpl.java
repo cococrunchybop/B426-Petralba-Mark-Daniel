@@ -40,7 +40,7 @@ public class SongRepositoryImpl implements SongRepository {
                 ));
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (findAllActive): " + e.getMessage());
+            System.out.println("Repository Error (findAllActive): " + DbConnection.friendlyMessage(e));
         }
         return songs;
     }
@@ -69,7 +69,7 @@ public class SongRepositoryImpl implements SongRepository {
                 ));
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (findAllArchived): " + e.getMessage());
+            System.out.println("Repository Error (findAllArchived): " + DbConnection.friendlyMessage(e));
         }
         return songs;
     }
@@ -87,7 +87,7 @@ public class SongRepositoryImpl implements SongRepository {
             prep.setInt(4, song.getAlbumId());
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (save): " + e.getMessage());
+            System.out.println("Repository Error (save): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -106,7 +106,7 @@ public class SongRepositoryImpl implements SongRepository {
             prep.setInt(5, song.getId());
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (update): " + e.getMessage());
+            System.out.println("Repository Error (update): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -121,7 +121,7 @@ public class SongRepositoryImpl implements SongRepository {
             prep.setInt(1, id);
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (deleteById): " + e.getMessage());
+            System.out.println("Repository Error (deleteById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -136,7 +136,7 @@ public class SongRepositoryImpl implements SongRepository {
             prep.setInt(1, id);
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (archiveById): " + e.getMessage());
+            System.out.println("Repository Error (archiveById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -151,7 +151,7 @@ public class SongRepositoryImpl implements SongRepository {
             prep.setInt(1, id);
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (restoreById): " + e.getMessage());
+            System.out.println("Repository Error (restoreById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -183,7 +183,7 @@ public class SongRepositoryImpl implements SongRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (searchByTitle): " + e.getMessage());
+            System.out.println("Repository Error (searchByTitle): " + DbConnection.friendlyMessage(e));
         }
         return songs;
     }

@@ -4,6 +4,7 @@ import com.joysistvi.recordingapp.main.model.Artist;
 import com.joysistvi.recordingapp.main.service.ArtistService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ArtistView {
@@ -18,6 +19,7 @@ public class ArtistView {
 
     public void handleMenu() {
         while (true) {
+            ConsoleUtil.clearScreen();
             System.out.println("\n=== MANAGE ARTISTS ===");
             System.out.println("1. View All Artists");
             System.out.println("2. Create Artist");
@@ -29,17 +31,24 @@ public class ArtistView {
             System.out.println("0. Back");
 
             int choice = promptForInt("Choose an option: ");
-            switch (choice) {
-                case 1 -> displayAllArtists();
-                case 2 -> promptCreateArtist();
-                case 3 -> promptUpdateArtist();
-                case 4 -> promptSearchArtists();
-                case 5 -> promptArchiveArtist();
-                case 6 -> promptRestoreArtist();
-                case 7 -> promptDeleteArtist();
-                case 0 -> { return; }
-                default -> System.out.println("Invalid option. Please try again.");
+            try {
+                switch (choice) {
+                    case 1 -> displayAllArtists();
+                    case 2 -> promptCreateArtist();
+                    case 3 -> promptUpdateArtist();
+                    case 4 -> promptSearchArtists();
+                    case 5 -> promptArchiveArtist();
+                    case 6 -> promptRestoreArtist();
+                    case 7 -> promptDeleteArtist();
+                    case 0 -> { return; }
+                    default -> System.out.println("Invalid option. Please try again.");
+                }
+            } catch (NoSuchElementException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                System.out.println("\nSomething went wrong: " + e.getMessage());
             }
+            ConsoleUtil.pause(scanner);
         }
     }
 
@@ -64,12 +73,26 @@ public class ArtistView {
         System.out.println("\n=== UPDATE Artist ===");
         displayAllArtists();
         int id = promptForInt("Enter artist ID to update: ");
-        System.out.print("Enter new artist name: ");
+
+        Artist current = artistService.getArtistById(id);
+        if (current == null) {
+            System.out.println("Artist not found or invalid ID.");
+            return;
+        }
+
+        System.out.print("Enter new artist name (press Enter to keep current [" + current.getName() + "]): ");
         String name = scanner.nextLine();
+
+        if (name.trim().isEmpty()) {
+            name = current.getName();
+        } else {
+            name = name.trim();
+        }
 
         boolean updated = artistService.updateArtist(id, name);
         if (updated) {
             System.out.println("Artist ID " + id + " updated successfully!");
+            displayAllArtists();
         } else {
             System.out.println("No artist updated (check ID or input).");
         }
@@ -130,28 +153,35 @@ public class ArtistView {
     }
 
     private void printArtistTable(String header, List<Artist> artists, String emptyMessage) {
+        String border = "+------+---------------------------+";
+
         System.out.println(header);
-        System.out.printf("%-4s %-25s%n", "ID", "Artist Name");
+        System.out.println(border);
+        System.out.printf("| %-4s | %-25s |%n", "ID", "Artist Name");
+        System.out.println(border);
 
         if (artists == null || artists.isEmpty()) {
-            System.out.println(emptyMessage);
+            String message = (emptyMessage != null && !emptyMessage.isEmpty())
+                    ? emptyMessage
+                    : "No artists found.";
+            System.out.printf("| %-32s |%n", truncate(message, 32));
+            System.out.println(border);
             return;
         }
 
         for (Artist artist : artists) {
-            System.out.printf("%-4d %-25s%n", artist.getId(), artist.getName());
+            String name = artist.getName() != null ? artist.getName() : "";
+            System.out.printf("| %-4d | %-25s |%n", artist.getId(), truncate(name, 25));
         }
+
+        System.out.println(border);
+    }
+
+    private String truncate(String text, int maxLength) {
+        return ConsoleUtil.truncate(text, maxLength);
     }
 
     private int promptForInt(String promptMessage) {
-        while (true) {
-            System.out.print(promptMessage);
-            String input = scanner.nextLine().trim();
-            try {
-                return Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
-            }
-        }
+        return ConsoleUtil.promptForInt(scanner, promptMessage);
     }
 }

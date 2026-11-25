@@ -39,7 +39,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
                 ));
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (findAllActive): " + e.getMessage());
+            System.out.println("Repository Error (findAllActive): " + DbConnection.friendlyMessage(e));
         }
         return albums;
     }
@@ -67,7 +67,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
                 ));
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (findAllArchived): " + e.getMessage());
+            System.out.println("Repository Error (findAllArchived): " + DbConnection.friendlyMessage(e));
         }
         return albums;
     }
@@ -84,7 +84,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
             prep.setInt(3, album.getArtistId());
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (save): " + e.getMessage());
+            System.out.println("Repository Error (save): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -102,7 +102,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
             prep.setInt(4, album.getId());
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (update): " + e.getMessage());
+            System.out.println("Repository Error (update): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -117,7 +117,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
             prep.setInt(1, id);
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (deleteById): " + e.getMessage());
+            System.out.println("Repository Error (deleteById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -132,7 +132,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
             prep.setInt(1, id);
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (archiveById): " + e.getMessage());
+            System.out.println("Repository Error (archiveById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -147,7 +147,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
             prep.setInt(1, id);
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (restoreById): " + e.getMessage());
+            System.out.println("Repository Error (restoreById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -178,7 +178,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (searchByName): " + e.getMessage());
+            System.out.println("Repository Error (searchByName): " + DbConnection.friendlyMessage(e));
         }
         return albums;
     }

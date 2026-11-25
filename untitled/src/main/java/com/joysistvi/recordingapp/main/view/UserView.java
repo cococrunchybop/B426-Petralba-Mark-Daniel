@@ -3,6 +3,7 @@ package com.joysistvi.recordingapp.main.view;
 import com.joysistvi.recordingapp.main.model.User;
 import com.joysistvi.recordingapp.main.service.UserService;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class UserView {
@@ -16,6 +17,7 @@ public class UserView {
 
     public void handleMenu() {
         while (true) {
+            ConsoleUtil.clearScreen();
             System.out.println("\n=== MANAGE USERS ===");
             System.out.println("1. View All Users");
             System.out.println("2. Create / Register User");
@@ -27,17 +29,24 @@ public class UserView {
             System.out.println("0. Back");
 
             int choice = promptForInt("Choose an option: ");
-            switch (choice) {
-                case 1 -> displayAllUsers();
-                case 2 -> promptCreateUser();
-                case 3 -> promptUpdateUser();
-                case 4 -> promptSearchUsers();
-                case 5 -> promptArchiveUser();
-                case 6 -> promptRestoreUser();
-                case 7 -> promptDeleteUser();
-                case 0 -> { return; }
-                default -> System.out.println("Invalid option. Please try again.");
+            try {
+                switch (choice) {
+                    case 1 -> displayAllUsers();
+                    case 2 -> promptCreateUser();
+                    case 3 -> promptUpdateUser();
+                    case 4 -> promptSearchUsers();
+                    case 5 -> promptArchiveUser();
+                    case 6 -> promptRestoreUser();
+                    case 7 -> promptDeleteUser();
+                    case 0 -> { return; }
+                    default -> System.out.println("Invalid option. Please try again.");
+                }
+            } catch (NoSuchElementException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                System.out.println("\nSomething went wrong: " + e.getMessage());
             }
+            ConsoleUtil.pause(scanner);
         }
     }
 
@@ -151,32 +160,42 @@ public class UserView {
     }
 
     private void printUserTable(String header, List<User> users, String emptyMessage) {
+        String border = "+------+--------------------+----------------------------+------------+";
+
         System.out.println(header);
-        System.out.printf("%-4s %-18s %-26s %-10s%n", "ID", "Username", "Email", "Role");
+        System.out.println(border);
+        System.out.printf("| %-4s | %-18s | %-26s | %-10s |%n", "ID", "Username", "Email", "Role");
+        System.out.println(border);
 
         if (users == null || users.isEmpty()) {
-            System.out.println(emptyMessage);
+            String message = (emptyMessage != null && !emptyMessage.isEmpty())
+                    ? emptyMessage
+                    : "No users found.";
+            System.out.printf("| %-67s |%n", truncate(message, 67));
+            System.out.println(border);
             return;
         }
 
         for (User user : users) {
-            System.out.printf("%-4d %-18s %-26s %-10s%n",
+            String username = user.getUsername() != null ? user.getUsername() : "";
+            String email = user.getEmail() != null ? user.getEmail() : "";
+            String role = user.getRole() != null ? user.getRole() : "";
+
+            System.out.printf("| %-4d | %-18s | %-26s | %-10s |%n",
                     user.getId(),
-                    user.getUsername(),
-                    user.getEmail(),
-                    user.getRole());
+                    truncate(username, 18),
+                    truncate(email, 26),
+                    truncate(role, 10));
         }
+
+        System.out.println(border);
+    }
+
+    private String truncate(String text, int maxLength) {
+        return ConsoleUtil.truncate(text, maxLength);
     }
 
     private int promptForInt(String promptMessage) {
-        while (true) {
-            System.out.print(promptMessage);
-            String input = scanner.nextLine().trim();
-            try {
-                return Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
-            }
-        }
+        return ConsoleUtil.promptForInt(scanner, promptMessage);
     }
 }

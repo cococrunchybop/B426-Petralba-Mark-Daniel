@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
                 ));
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (findAllActive): " + e.getMessage());
+            System.out.println("Repository Error (findAllActive): " + DbConnection.friendlyMessage(e));
         }
         return users;
     }
@@ -59,7 +59,7 @@ public class UserRepositoryImpl implements UserRepository {
                 ));
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (findAllArchived): " + e.getMessage());
+            System.out.println("Repository Error (findAllArchived): " + DbConnection.friendlyMessage(e));
         }
         return users;
     }
@@ -85,7 +85,7 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (findByUsername): " + e.getMessage());
+            System.out.println("Repository Error (findByUsername): " + DbConnection.friendlyMessage(e));
         }
         return null;
     }
@@ -103,7 +103,7 @@ public class UserRepositoryImpl implements UserRepository {
             prep.setString(4, user.getRole());
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (save): " + e.getMessage());
+            System.out.println("Repository Error (save): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -120,7 +120,7 @@ public class UserRepositoryImpl implements UserRepository {
             prep.setInt(3, user.getId());
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (update): " + e.getMessage());
+            System.out.println("Repository Error (update): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -135,7 +135,7 @@ public class UserRepositoryImpl implements UserRepository {
             prep.setInt(1, id);
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (deleteById): " + e.getMessage());
+            System.out.println("Repository Error (deleteById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -150,7 +150,7 @@ public class UserRepositoryImpl implements UserRepository {
             prep.setInt(1, id);
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (archiveById): " + e.getMessage());
+            System.out.println("Repository Error (archiveById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -165,7 +165,7 @@ public class UserRepositoryImpl implements UserRepository {
             prep.setInt(1, id);
             return prep.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Repository Error (restoreById): " + e.getMessage());
+            System.out.println("Repository Error (restoreById): " + DbConnection.friendlyMessage(e));
             return false;
         }
     }
@@ -192,7 +192,7 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Repository Error (searchByUsername): " + e.getMessage());
+            System.out.println("Repository Error (searchByUsername): " + DbConnection.friendlyMessage(e));
         }
         return users;
     }
