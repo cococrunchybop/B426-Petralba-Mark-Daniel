@@ -155,7 +155,7 @@ RecordingStudioConsoleApp
 
 **Database name:** `recording_studio_db`
 
-**SQL file:** [`database/recording_studio_db.sql`](database/recording_studio_db.sql). It creates the database, every table, and the sample data, so the database can be recreated in one step.
+**SQL file:** [`recording_studio_db.sql`](recording_studio_db.sql). It creates the database, every table, and the sample data, so the database can be recreated in one step.
 
 ### Entity relationships
 
