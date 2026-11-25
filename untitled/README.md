@@ -607,7 +607,7 @@ A suggested way to study this project from the ground up, following how it was b
 ## Author
 
 - **Mark Daniel A. Petralba**
-Student, Programming (Java) NC III, Joysis Tech Voc Inc.
+, Student, Programming (Java) NC III, Joysis Tech Voc Inc.
 GitHub: [@cococrunchybop](https://github.com/<your-github-username>)
 
 ---
